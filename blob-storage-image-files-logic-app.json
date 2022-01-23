@@ -1,0 +1,115 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Condition": {
+                "actions": {},
+                "else": {
+                    "actions": {
+                        "Delete_blob_(V2)": {
+                            "inputs": {
+                                "headers": {
+                                    "SkipDeleteIfFileNotFoundOnServer": false
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['azureblob']['connectionId']"
+                                    }
+                                },
+                                "method": "delete",
+                                "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/files/@{encodeURIComponent(encodeURIComponent(triggerBody()?['Path']))}"
+                            },
+                            "runAfter": {},
+                            "type": "ApiConnection"
+                        }
+                    }
+                },
+                "expression": {
+                    "or": [
+                        {
+                            "endsWith": [
+                                "@variables('fileName')",
+                                "jpg"
+                            ]
+                        },
+                        {
+                            "endsWith": [
+                                "@variables('fileName')",
+                                "png"
+                            ]
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Initialize_variable_-_fileName": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "If"
+            },
+            "Initialize_variable_-_fileName": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "fileName",
+                            "type": "string",
+                            "value": "@triggerBody()?['Name']"
+                        }
+                    ]
+                },
+                "runAfter": {},
+                "type": "InitializeVariable"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "defaultValue": {},
+                "type": "Object"
+            }
+        },
+        "triggers": {
+            "When_a_blob_is_added_or_modified_(properties_only)_(V2)": {
+                "evaluatedRecurrence": {
+                    "frequency": "Minute",
+                    "interval": 3
+                },
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['azureblob']['connectionId']"
+                        }
+                    },
+                    "method": "get",
+                    "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/triggers/batch/onupdatedfile",
+                    "queries": {
+                        "checkBothCreatedAndModifiedDateTime": false,
+                        "folderId": "JTJmaW1hZ2Vz",
+                        "maxFileCount": 10
+                    }
+                },
+                "metadata": {
+                    "JTJmaW1hZ2Vz": "/images"
+                },
+                "recurrence": {
+                    "frequency": "Minute",
+                    "interval": 3
+                },
+                "splitOn": "@triggerBody()",
+                "type": "ApiConnection"
+            }
+        }
+    },
+    "parameters": {
+        "$connections": {
+            "value": {
+                "azureblob": {
+                    "connectionId": "/subscriptions/487a0940-d4a9-4325-b858-f7d01b8d1e8f/resourceGroups/live-events-rg/providers/Microsoft.Web/connections/azureblob-2",
+                    "connectionName": "azureblob-2",
+                    "id": "/subscriptions/487a0940-d4a9-4325-b858-f7d01b8d1e8f/providers/Microsoft.Web/locations/westeurope/managedApis/azureblob"
+                }
+            }
+        }
+    }
+}
