@@ -15,3 +15,6 @@ Ora – se volete conoscere il **No-Code** su **Azure** – non vi resta che uni
 - [Andrea Carratta - Linkedin](https://links.devandreacarratta.it/linkedin) 
 - [Andrea Carratta - Blog](https://blog.devandreacarratta.it/) 
 - [Dev WorkSpace Extra Meetup・Intervista ad Andrea Carratta (gennaio 2022)](https://www.youtube.com/watch?v=XGY0N6P6MOQ)
+- [Dev WorkSpace - Gruppo Facebook](https://www.facebook.com/groups/devworkspace)
+- [Dev WorkSpace - Gruppo Linkedin](https://www.linkedin.com/groups/8973763/)
+- [Dev WorkSpace - Eventbrite](https://devworkspace.eventbrite.com/)
