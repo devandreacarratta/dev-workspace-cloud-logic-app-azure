@@ -105,9 +105,9 @@
         "$connections": {
             "value": {
                 "azureblob": {
-                    "connectionId": "/subscriptions/487a0940-d4a9-4325-b858-f7d01b8d1e8f/resourceGroups/live-events-rg/providers/Microsoft.Web/connections/azureblob-2",
+                    "connectionId": "",
                     "connectionName": "azureblob-2",
-                    "id": "/subscriptions/487a0940-d4a9-4325-b858-f7d01b8d1e8f/providers/Microsoft.Web/locations/westeurope/managedApis/azureblob"
+                    "id": ""
                 }
             }
         }
