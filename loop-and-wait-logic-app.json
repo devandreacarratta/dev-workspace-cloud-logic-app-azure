@@ -1,0 +1,138 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Initialize_variable": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "currentStep",
+                            "type": "integer",
+                            "value": 0
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Initialize_variable_-_howManyTimes": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "InitializeVariable"
+            },
+            "Initialize_variable_-_endUTCTime": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "endUTCTime",
+                            "type": "string",
+                            "value": "@{string(utcNow())}"
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Until": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "InitializeVariable"
+            },
+            "Initialize_variable_-_howManyTimes": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "howManyTimes",
+                            "type": "integer",
+                            "value": 5
+                        }
+                    ]
+                },
+                "runAfter": {},
+                "type": "InitializeVariable"
+            },
+            "Initialize_variable_-_startUTCTime": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "startUTCTime",
+                            "type": "string",
+                            "value": "@{string(utcNow())}"
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Initialize_variable": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "InitializeVariable"
+            },
+            "Response": {
+                "inputs": {
+                    "body": {
+                        "End": "@{variables('endUTCTime')}",
+                        "Start": "@{variables('startUTCTime')}"
+                    },
+                    "statusCode": 200
+                },
+                "kind": "Http",
+                "runAfter": {
+                    "Initialize_variable_-_endUTCTime": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Response"
+            },
+            "Until": {
+                "actions": {
+                    "Delay": {
+                        "inputs": {
+                            "interval": {
+                                "count": "@variables('howManyTimes')",
+                                "unit": "Second"
+                            }
+                        },
+                        "runAfter": {},
+                        "type": "Wait"
+                    },
+                    "Increment_variable": {
+                        "inputs": {
+                            "name": "currentStep",
+                            "value": 1
+                        },
+                        "runAfter": {
+                            "Delay": [
+                                "Succeeded"
+                            ]
+                        },
+                        "type": "IncrementVariable"
+                    }
+                },
+                "expression": "@equals(variables('currentStep'), variables('howManyTimes'))",
+                "limit": {
+                    "count": 60,
+                    "timeout": "PT1H"
+                },
+                "runAfter": {
+                    "Initialize_variable_-_startUTCTime": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Until"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {},
+        "triggers": {
+            "manual": {
+                "inputs": {
+                    "method": "GET",
+                    "schema": {}
+                },
+                "kind": "Http",
+                "type": "Request"
+            }
+        }
+    },
+    "parameters": {}
+}
