@@ -1,0 +1,88 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Create_blob_(V2)": {
+                "inputs": {
+                    "body": "@triggerBody()",
+                    "headers": {
+                        "ReadFileMetadataFromServer": true
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['azureblob']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('AccountNameFromSettings'))}/files",
+                    "queries": {
+                        "folderPath": "/liveeventstorage",
+                        "name": "@base64ToString(triggerOutputs()['headers']['x-ms-file-name-encoded'])",
+                        "queryParametersSingleEncoded": true
+                    }
+                },
+                "runAfter": {},
+                "runtimeConfiguration": {
+                    "contentTransfer": {
+                        "transferMode": "Chunked"
+                    }
+                },
+                "type": "ApiConnection"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "defaultValue": {},
+                "type": "Object"
+            }
+        },
+        "triggers": {
+            "When_a_file_is_added_or_modified": {
+                "evaluatedRecurrence": {
+                    "frequency": "Minute",
+                    "interval": 5
+                },
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['ftp']['connectionId']"
+                        }
+                    },
+                    "method": "get",
+                    "path": "/datasets/default/triggers/onupdatedfile",
+                    "queries": {
+                        "folderId": "L2lucHV0",
+                        "includeFileContent": true
+                    }
+                },
+                "metadata": {
+                    "6e202211-2856-4d17-9ded-5beb8b8626b0": "/",
+                    "L2lucHV0": "/input"
+                },
+                "recurrence": {
+                    "frequency": "Minute",
+                    "interval": 5
+                },
+                "type": "ApiConnection"
+            }
+        }
+    },
+    "parameters": {
+        "$connections": {
+            "value": {
+                "azureblob": {
+                    "connectionId":"",
+                    "connectionName": "azureblob-2",
+                    "id": ""
+                },
+                "ftp": {
+                    "connectionId": "",
+                    "connectionName": "ftp",
+                    "id": ""
+                }
+            }
+        }
+    }
+}
