@@ -11,10 +11,36 @@ Certo, sicuramente quello che vedremo un programmatore lo può scrivere via codi
 
 Ora – se volete conoscere il **No-Code** su **Azure** – non vi resta che unirvi alla live per avere una visione alternativa (e per tutti) alla programmazione.
 
+## Logic App Esempi
+
+**Prendiamo confidenza col classico «Hello World»…**
+
+ - hello-world-logic-app 
+ - hello-world-name-logic-app
+ - hello-world-name-check-logic-app
+
+**Gestione/ Monitoraggio errori & Loop:**
+
+- exception-message-logic-app
+- loop-and-wait-logic-app
+
+**Files: Blob Storage & FTP**
+
+- blob-storage-image-files-logic-app
+- blob-storage-image-files-to-ftp-logic-app
+- ftp-to-blob-storage-logic-app
+
+**Integrazione col mondo «coding»**
+
+- post-request-payload-logic-app
+- post-request-azure-function-logic-app
+
+
 ## Link Utili
 - [Andrea Carratta - Linkedin](https://links.devandreacarratta.it/linkedin) 
 - [Andrea Carratta - Blog](https://blog.devandreacarratta.it/) 
 - [Dev WorkSpace Extra Meetup・Intervista ad Andrea Carratta (gennaio 2022)](https://www.youtube.com/watch?v=XGY0N6P6MOQ)
+- [Dev WorkSpace #24・Cloud & No-Coding: come fare su Azure? (Live)](https://www.youtube.com/watch?v=qYrjm3Q7QjY)
 - [Dev WorkSpace - Gruppo Facebook](https://www.facebook.com/groups/devworkspace)
 - [Dev WorkSpace - Gruppo Linkedin](https://www.linkedin.com/groups/8973763/)
 - [Dev WorkSpace - Eventbrite](https://devworkspace.eventbrite.com/)
