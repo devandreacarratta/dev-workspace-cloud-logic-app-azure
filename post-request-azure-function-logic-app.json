@@ -1,0 +1,98 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Initialize_variable": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "fullName",
+                            "type": "string",
+                            "value": "@{concat(triggerBody()?['FirstName'],' ',triggerBody()?['LastName'])}"
+                        }
+                    ]
+                },
+                "runAfter": {},
+                "type": "InitializeVariable"
+            },
+            "Response": {
+                "inputs": {
+                    "body": {
+                        "FullName": "@{variables('fullName')}"
+                    },
+                    "statusCode": 200
+                },
+                "kind": "Http",
+                "runAfter": {
+                    "Scope": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Response"
+            },
+            "Response_with_Error": {
+                "inputs": {
+                    "body": {
+                        "Message": "@{variables('fullName')}, hai vinto un errore!"
+                    },
+                    "statusCode": 200
+                },
+                "kind": "Http",
+                "runAfter": {
+                    "Scope": [
+                        "TimedOut",
+                        "Skipped",
+                        "Failed"
+                    ]
+                },
+                "type": "Response"
+            },
+            "Scope": {
+                "actions": {
+                    "DomainExpiredAddWebSite": {
+                        "inputs": {
+                            "body": {
+                                "FullName": "@{variables('fullName')}"
+                            },
+                            "function": {
+                                "id": ""
+                            },
+                            "method": "POST"
+                        },
+                        "runAfter": {},
+                        "type": "Function"
+                    }
+                },
+                "runAfter": {
+                    "Initialize_variable": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Scope"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {},
+        "triggers": {
+            "manual": {
+                "inputs": {
+                    "schema": {
+                        "properties": {
+                            "FirstName": {
+                                "type": "string"
+                            },
+                            "LastName": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "kind": "Http",
+                "type": "Request"
+            }
+        }
+    },
+    "parameters": {}
+}

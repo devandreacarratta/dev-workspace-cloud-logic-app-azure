@@ -1,0 +1,126 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Initialize_variable_-_firstNumber": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "firstNumber",
+                            "type": "float",
+                            "value": "@triggerBody()?['number1']"
+                        }
+                    ]
+                },
+                "runAfter": {},
+                "type": "InitializeVariable"
+            },
+            "Initialize_variable_-_result": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "result",
+                            "type": "float",
+                            "value": 0
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Initialize_variable_2_-_secondNumber": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "InitializeVariable"
+            },
+            "Initialize_variable_2_-_secondNumber": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "secondNumber",
+                            "type": "float",
+                            "value": "@triggerBody()?['number2']"
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Initialize_variable_-_firstNumber": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "InitializeVariable"
+            },
+            "Response_-_Fake_200_Status": {
+                "inputs": {
+                    "body": {
+                        "Error": "Ops, hai vinto un 500 Internal Server Error!"
+                    },
+                    "statusCode": 200
+                },
+                "kind": "Http",
+                "runAfter": {
+                    "Scope": [
+                        "Failed"
+                    ]
+                },
+                "type": "Response"
+            },
+            "Response_200": {
+                "inputs": {
+                    "body": {
+                        "Result": "@variables('result')"
+                    },
+                    "statusCode": 200
+                },
+                "kind": "Http",
+                "runAfter": {
+                    "Scope": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Response"
+            },
+            "Scope": {
+                "actions": {
+                    "Set_variable": {
+                        "inputs": {
+                            "name": "result",
+                            "value": "@div(variables('firstNumber'),variables('secondNumber'))"
+                        },
+                        "runAfter": {},
+                        "type": "SetVariable"
+                    }
+                },
+                "runAfter": {
+                    "Initialize_variable_-_result": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Scope"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {},
+        "triggers": {
+            "manual": {
+                "inputs": {
+                    "method": "POST",
+                    "schema": {
+                        "properties": {
+                            "number1": {
+                                "type": "integer"
+                            },
+                            "number2": {
+                                "type": "integer"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "kind": "Http",
+                "type": "Request"
+            }
+        }
+    },
+    "parameters": {}
+}
